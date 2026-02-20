@@ -1,0 +1,401 @@
+/* .navbg{
+    background-color: #405189;
+    color: white;
+} */
+/* .leftnavmenu .navbar-nav .menu-title {
+    color: white;
+} */
+
+
+/* On hover — show slim scrollbar */
+.leftnavmenu:hover {
+    overflow-y: auto !important;
+    padding: 0%;
+    margin: 0%;
+}
+
+/* Slim scrollbar style (visible on hover) */
+.leftnavmenu::-webkit-scrollbar {
+    width: 2px;
+}
+
+.leftnavmenu::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.leftnavmenu::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+}
+
+/* Firefox support: hide by default, show on hover */
+.leftnavmenu {
+    scrollbar-width: none; /* hide */
+}
+
+.leftnavmenu:hover {
+    scrollbar-width: thin;
+    /* scrollbar-color: rgba(0, 0, 0, 0.3) transparent; */
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+
+/* certificate & education & popups */
+
+/* top alart message */
+.top-alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4BB543;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 9999;
+    font-weight: bold;
+    animation: slideDown 0.3s ease-in-out;
+  }
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+  
+  
+  
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  
+  .professional-modal {
+    background: #ffffff;
+    border-radius: 16px;
+    max-width: 450px;
+    width: 90%;
+    padding: 30px 25px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+    animation: fadeInScale 0.4s ease-in-out;
+  }
+  
+  .modal-image img.worker-img {
+    width: 80px;
+    height: auto;
+    animation: popIn 0.4s ease-in-out;
+  }
+  
+  .modal-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2f80ed;
+  }
+  
+  .modal-text {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+  
+  .modal-button {
+    /* background-color: #2f80ed; */
+    background-color: #ed972f;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .modal-button:hover {
+    background-color: #1366d6;
+  }
+  
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes popIn {
+    0% {
+      transform: scale(0.5) rotate(-10deg);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1) rotate(0deg);
+      opacity: 1;
+    }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  /* alert message popup */
+  
+  .modal-content {
+    max-width: 400px;
+    width: 90%;
+    animation: fadeIn 0.3s ease-in-out;
+    background-color: white;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  
+  
+  
+  .checkbox-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px; 
+    }
+    
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      
+    }
+    
+  
+  
+  
+  
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      color:black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 70000
+    }
+  
+    .popup-content {
+      background: rgb(15, 174, 47);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 1200px;
+      color:black;
+      /* max-width: 500px; */
+      max-height: 90vh;
+      overflow-y: auto;
+      transition: transform 0.3s ease-in-out;
+    }
+  
+    .certificate-list {
+      margin-top: 10px;
+    }
+  
+    .certificate-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+  
+    .popup-close {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+    }
+  
+    .popup-close:hover {
+      background: #c82333;
+    }
+  
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .popup-content {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+  
+      .popup-close {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+      }
+    }
+  
+  
+  
+    .certificate-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+      color: #000;
+    }
+    
+    .certificate-icon {
+      font-size: 24px; /* Adjust size */
+      color: #007bff; /* Blue icon */
+    }
+    
+  
+  .deleteicon{
+    cursor: pointer;
+  }
+  
+  .leftborder{
+    border-right:solid 3px rgba(176, 176, 176, 0.463);
+  }
+  .cericon{
+    font-size: 90px;
+  }
+  
+  
+  #certificateTableWrapper {
+    max-height: 210px; /* Set the maximum height to 80px */
+    height: 210px;
+    overflow-y: auto; /* Enable vertical scrolling if content exceeds 80px */
+    /* display: block;  */
+  }
+  
+  
+  #certificateTableWrapper table {
+    /* width: 100%; */
+    border-collapse: collapse; /* Optional: makes borders collapse */
+  }
+  
+  #certificateTableWrapper thead {
+    position: sticky; /* Make the header sticky */
+    top: 0; /* Stick it to the top */
+    /* background-color: rgb(115, 33, 33); Background color for the header */
+    z-index: 1; /* Keeps the header above the table body */
+    box-shadow: 0 12px 15px rgba(0, 0, 0, 0.1); /* Optional: adds shadow to make it more visible */
+    backdrop-filter: blur(115px); /* Applies blur to the background */
+    -webkit-backdrop-filter: blur(15px); /* For Safari */
+  }
+  
+  
+  #certificateTableWrapper tbody {
+    /* display: block;  */
+    height: 80px; /* Forces the scrollable height to be 80px */
+    overflow-y: auto;
+  }
+  
+  
+  /* Custom scrollbar styles */
+  #certificateTableWrapper::-webkit-scrollbar {
+    width: 8px; /* Slim scrollbar */
+  }
+  
+  #certificateTableWrapper::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Light background for the track */
+    border-radius: 10px;
+  }
+  
+  #certificateTableWrapper::-webkit-scrollbar-thumb {
+    background-color: #888; /* Thumb color */
+    border-radius: 10px; /* Rounded corners for the thumb */
+  }
+  
+  #certificateTableWrapper::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Darker thumb on hover */
+  }
+  
+  
+  
+  /* educationtable */
+  #educationtable{
+    /* height: 313px; */
+    height: 210px;
+    overflow-y: auto;
+    max-height: 313px;
+  }
+  
+  #educationtable thead {
+    position: sticky; /* Make the header sticky */
+    top: 0; /* Stick it to the top */
+    /* background-color: rgb(115, 33, 33); Background color for the header */
+    z-index: 1; /* Keeps the header above the table body */
+    box-shadow: 0 12px 15px rgba(0, 0, 0, 0.1); /* Optional: adds shadow to make it more visible */
+    backdrop-filter: blur(115px); /* Applies blur to the background */
+    -webkit-backdrop-filter: blur(15px); /* For Safari */
+  }
+  
+  /* Custom scrollbar styles */
+  #educationtable::-webkit-scrollbar {
+    width: 8px; /* Slim scrollbar */
+  }
+  
+  #educationtable::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Light background for the track */
+    border-radius: 10px;
+  }
+  
+  #educationtable::-webkit-scrollbar-thumb {
+    background-color: #888; /* Thumb color */
+    border-radius: 10px; /* Rounded corners for the thumb */
+  }
+  
+  #educationtable::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Darker thumb on hover */
+  }
+  
+  
+ 
+  .adddynamictablefeilds{
+    background-color: #9dd7babb;
+  }
