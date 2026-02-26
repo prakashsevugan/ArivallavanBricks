@@ -218,11 +218,11 @@ const handleSubmit = async () => {
   readOnly
 />
                                     {/* Payment Status Button */}
-      {formData.PaymentStatus && (
+      {/* {formData.PaymentStatus && (
         <button className={`btn btn-${getStatusColor()} mb-3`}>
           {formData.PaymentStatus}
         </button>
-      )}
+      )} */}
                                 </div>
                                 <div className="col-md-4">
                                     <label className="form-label">Import Date</label>
@@ -423,7 +423,7 @@ const handleSubmit = async () => {
         readOnly
                                     />
                                 </div>
-                                <div className="col-md-4">
+                                {/* <div className="col-md-4">
                                     <label className="form-label">Payment Status</label>
                                     <input
                                         type="number"
@@ -431,7 +431,7 @@ const handleSubmit = async () => {
 value={formData.PaymentStatus}
         readOnly
                                     />
-                                </div>
+                                </div> */}
                                 <div className="col-md-4">
                                     <label className="form-label">Note query</label>
                                     <input
@@ -451,64 +451,156 @@ value={formData.PaymentStatus}
                                 {/* Buttons */}
 
 
+<div className="d-flex justify-content-between align-items-center mt-3">
 
- <div className="d-flex justify-content-end mt-3">
+  {/* LEFT SIDE - Payment Status */}
+  <div
+    className={`px-3 py-2 rounded text-white bg-${getStatusColor()}`}
+    style={{ fontWeight: "600" }}
+  >
+    Payment Status: {formData.PaymentStatus}
+  </div>
 
-        <button
-          className="btn btn-info me-2"
-          onClick={() => setShowInvoice(true)}
-        >
-          Payment Detail
-        </button>
+  {/* RIGHT SIDE - Buttons */}
+  <div>
+    <button
+      className="btn btn-info me-2"
+      onClick={() => setShowInvoice(true)}
+    >
+      Payment Detail
+    </button>
 
-        <button
-          className="btn btn-primary"
-          onClick={handleSubmit}
-        >
-          Add Import +
-        </button>
+    <button
+      className="btn btn-primary"
+      onClick={handleSubmit}
+    >
+      Add Import +
+    </button>
+  </div>
 
-      </div>
+</div>
 
       {/* ======================
          INVOICE PREVIEW
       ====================== */}
 
-      {showInvoice && (
-        <div className="card mt-4 p-4 shadow">
-          <h5 className="text-center mb-3">Invoice Preview</h5>
-          <hr />
+{showInvoice && (
+  <div
+    className="card mt-4 shadow-lg border-0 py-3"
+    style={{
+      backgroundColor: "#eaf2ff",   // soft blue outer bg
+      borderRadius: "12px"
+    }}
+  >
+    <div
+      className="card-body p-4"
+      style={{
+        backgroundColor: "#ffffff",
+        borderRadius: "10px"
+      }}
+    >
 
-          <p><strong>Import ID:</strong> {formData.ImportId}</p>
-          <p><strong>Material:</strong> {formData.MaterialType}</p>
-          <p>
-  <strong>Size:</strong>{" "}
-  {formData.MaterialSize
-    ? `${formData.MaterialSize} ${formData.SizeType || getUnit(formData.MaterialType)}`
-    : "-"}
-</p>
-          <p><strong>Material Total:</strong> ₹{formData.MaterialTotalPrice}</p>
-          <p><strong>Wages:</strong> ₹{formData.WagesAmount}</p>
-          <p><strong>Misc:</strong> ₹{formData.MiscellaneousAmount}</p>
-          <p><strong>GST:</strong> ₹{formData.GSTAmount}</p>
-
-          <hr />
-          <h5>Total: ₹{formData.FinalTotalAmount}</h5>
-          <p>Paid: ₹{formData.PaidAmount}</p>
-          <p>Balance: ₹{formData.BalanceAmount}</p>
-          <p>Status: {formData.PaymentStatus}</p>
-
-          <div className="text-end">
-            <button
-              className="btn btn-secondary"
-              onClick={() => setShowInvoice(false)}
-            >
-              Close
-            </button>
-          </div>
+      {/* Blue Header */}
+      <div
+        className="d-flex justify-content-between align-items-center mb-4 p-3"
+        style={{
+          backgroundColor: "#299ddb7f",
+          color: "white",
+          borderRadius: "8px"
+        }}
+      >
+        <div>
+          <h4 className="mb-0 fw-bold">INVOICE</h4>
+          <small>Import ID: {formData.ImportId}</small>
         </div>
-      )}
 
+        <div
+          className={`badge bg-${getStatusColor()} px-3 py-2`}
+          style={{ fontSize: "14px" }}
+        >
+          {formData.PaymentStatus}
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="table-responsive">
+        <table className="table table-bordered">
+          <thead style={{ backgroundColor: "#f1f6ff" }}>
+            <tr>
+              <th>Material</th>
+              <th>Size</th>
+              <th className="text-end">Price (Single)</th>
+              <th className="text-end">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{formData.MaterialType}</td>
+              <td>
+                {formData.MaterialSize
+                  ? `${formData.MaterialSize} ${formData.SizeType || getUnit(formData.MaterialType)}`
+                  : "-"}
+              </td>
+              <td className="text-end">₹{formData.MaterialPrice}</td>
+              <td className="text-end">₹{formData.MaterialTotalPrice}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      {/* Summary Section */}
+      <div className="row mt-4">
+        <div className="col-md-6"></div>
+        <div className="col-md-6">
+
+          <div className="d-flex justify-content-between">
+            <span>Wages</span>
+            <span>₹{formData.WagesAmount}</span>
+          </div>
+
+          <div className="d-flex justify-content-between">
+            <span>Miscellaneous</span>
+            <span>₹{formData.MiscellaneousAmount}</span>
+          </div>
+
+          <div className="d-flex justify-content-between">
+            <span>GST</span>
+            <span>₹{formData.GSTAmount}</span>
+          </div>
+
+          <hr />
+
+          <div className="d-flex justify-content-between fw-bold fs-5 text-primary">
+            <span>Grand Total</span>
+            <span>₹{formData.FinalTotalAmount}</span>
+          </div>
+
+          <div className="d-flex justify-content-between text-success mt-2">
+            <span>Paid</span>
+            <span>₹{formData.PaidAmount}</span>
+          </div>
+
+          <div className="d-flex justify-content-between text-danger">
+            <span>Balance</span>
+            <span>₹{formData.BalanceAmount}</span>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Close Button */}
+      <div className="text-end mt-4">
+        <button
+          className="btn btn-primary"
+          onClick={() => setShowInvoice(false)}
+        >
+          Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+)}
 
 
 
