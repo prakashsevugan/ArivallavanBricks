@@ -122,6 +122,7 @@ CREATE TABLE ImportProducts (
     VehicleNumber VARCHAR(50),
     MaterialType VARCHAR(100),
     MaterialSize VARCHAR(100),
+    SizeType VARCHAR(20),
     MaterialPrice DECIMAL(10,2),
     MaterialTotalPrice DECIMAL(10,2),
     WagesAmount DECIMAL(10,2),

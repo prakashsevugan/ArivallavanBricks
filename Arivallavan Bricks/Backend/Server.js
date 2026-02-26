@@ -1286,10 +1286,6 @@ app.get("/exportproduct/payment-history/:exportId", (req, res) => {
 
 
 
-
-
-
-   
 app.post("/api/import/add", (req, res) => {
 
   const data = req.body;
@@ -1302,19 +1298,21 @@ app.post("/api/import/add", (req, res) => {
   const insertQuery = `
     INSERT INTO ImportProducts (
       ImportId, ImportDate, ImportAddress, VehicleNumber,
-      MaterialType, MaterialSize, MaterialPrice, MaterialTotalPrice,
-      WagesAmount, MiscellaneousAmount, GSTAmount, FinalTotalAmount,
-      PaidAmount, BalanceAmount, PaymentStatus, Notequery
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      MaterialType, MaterialSize, SizeType, MaterialPrice,
+      MaterialTotalPrice, WagesAmount, MiscellaneousAmount,
+      GSTAmount, FinalTotalAmount, PaidAmount,
+      BalanceAmount, PaymentStatus, Notequery
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   const values = [
-    data.ImportId, // 👈 Now coming from frontend
+    data.ImportId,
     data.ImportDate,
     data.ImportAddress,
     data.VehicleNumber,
     data.MaterialType,
-    data.MaterialSizeWithUnit || data.MaterialSize,
+    parseFloat(data.MaterialSize) || 0,  // ✅ numeric only
+    data.SizeType || "",                 // ✅ NEW COLUMN
     parseFloat(data.MaterialPrice) || 0,
     parseFloat(data.MaterialTotalPrice) || 0,
     parseFloat(data.WagesAmount) || 0,
@@ -1329,7 +1327,10 @@ app.post("/api/import/add", (req, res) => {
 
   db.query(insertQuery, values, (err) => {
 
-    if (err) return res.status(500).json({ error: err });
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: err });
+    }
 
     res.status(200).json({
       message: "Import Product Added Successfully"

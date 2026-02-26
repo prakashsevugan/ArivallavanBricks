@@ -87,57 +87,70 @@ useEffect(() => {
      AUTO CALCULATION
   ========================= */
 
-  useEffect(() => {
+useEffect(() => {
 
-    const size = parseFloat(formData.MaterialSize) || 0;
-    const price = parseFloat(formData.MaterialPrice) || 0;
+  const size = Math.max(0, parseFloat(formData.MaterialSize) || 0);
+  const price = Math.max(0, parseFloat(formData.MaterialPrice) || 0);
+  const wages = Math.max(0, parseFloat(formData.WagesAmount) || 0);
+  const misc = Math.max(0, parseFloat(formData.MiscellaneousAmount) || 0);
+  const gst = Math.max(0, parseFloat(formData.GSTAmount) || 0);
+  let paid = Math.max(0, parseFloat(formData.PaidAmount) || 0);
 
-    let unit = "";
+  // 🔹 Material Total
+  const materialTotal = size * price;
 
-    if (
-      ["M-Sand","P-Sand","Dust","Chips","WhiteFlyAsh","BlackFlyAsh","WhiteLime","BrownLime"]
-      .includes(formData.MaterialType)
-    ) unit = " Unit";
+  // 🔹 Final Total
+  const finalTotal = materialTotal + wages + misc + gst;
 
-    else if (formData.MaterialType === "CementBag")
-      unit = " Count";
+  // 🔹 Prevent PaidAmount greater than FinalTotal
+  if (paid > finalTotal) {
+    paid = finalTotal;
+  }
 
-    else if (formData.MaterialType === "Chemical")
-      unit = " Litter";
+  const balance = finalTotal - paid;
 
-    const materialTotal = size * price;
+  // 🔹 Payment Status
+  let status = "Unpaid";
 
-    const finalTotal =
-      materialTotal +
-      (parseFloat(formData.WagesAmount) || 0) +
-      (parseFloat(formData.MiscellaneousAmount) || 0) +
-      (parseFloat(formData.GSTAmount) || 0);
+  if (paid > 0 && paid < finalTotal) {
+    status = "Pending";
+  }
 
-    const paid = parseFloat(formData.PaidAmount) || 0;
-    const balance = finalTotal - paid;
+  if (paid >= finalTotal && finalTotal > 0) {
+    status = "Paid";
+  }
 
-    let status = "Unpaid";
-    if (paid > 0 && paid < finalTotal) status = "Pending";
-    if (paid >= finalTotal && finalTotal > 0) status = "Paid";
+  setFormData(prev => ({
+    ...prev,
+    MaterialTotalPrice: materialTotal,
+    FinalTotalAmount: finalTotal,
+    BalanceAmount: balance,
+    PaidAmount: paid,
+    PaymentStatus: status
+  }));
 
-    setFormData(prev => ({
-      ...prev,
-      MaterialSizeWithUnit: size ? size + unit : "",
-      MaterialTotalPrice: materialTotal,
-      FinalTotalAmount: finalTotal,
-      BalanceAmount: balance,
-      PaymentStatus: status
-    }));
+}, [
+  formData.MaterialSize,
+  formData.MaterialPrice,
+  formData.WagesAmount,
+  formData.MiscellaneousAmount,
+  formData.GSTAmount,
+  formData.PaidAmount
+]);
 
-  }, [
-    formData.MaterialSize,
-    formData.MaterialPrice,
-    formData.MaterialType,
-    formData.WagesAmount,
-    formData.MiscellaneousAmount,
-    formData.GSTAmount,
-    formData.PaidAmount
-  ]);
+
+const getUnit = (type) => {
+  if (
+    ["M-Sand","P-Sand","Dust","Chips","WhiteFlyAsh","BlackFlyAsh","WhiteLime","BrownLime"]
+      .includes(type)
+  ) return "Unit";
+
+  if (type === "CementBag") return "Count";
+
+  if (type === "Chemical") return "Litre";
+
+  return "";
+};
 
   /* =========================
      SUBMIT
@@ -146,23 +159,31 @@ useEffect(() => {
 const handleSubmit = async () => {
   try {
 
+    const payload = {
+      ...formData,
+      SizeType: getUnit(formData.MaterialType) // ✅ send SizeType
+    };
+    
+
     await axios.post(
       "http://localhost:3001/api/import/add",
-      formData
+      payload
     );
 
     alert("Import Added Successfully");
 
-    // Reset form but keep new ImportId
+    // Reset form
     setFormData(initialState);
 
-    // Generate next ID automatically
+    // Generate next ImportId
     generateImportId();
 
   } catch (err) {
     console.log(err);
   }
 };
+
+
     const getStatusColor = () => {
     if (formData.PaymentStatus === "Paid") return "success";
     if (formData.PaymentStatus === "Pending") return "warning";
@@ -173,6 +194,8 @@ const handleSubmit = async () => {
   formData.MaterialType !== "" &&
   formData.MaterialSize !== "";
 
+
+  
     return (
         <div className="main-content">
             <div className="page-content pb-2">
@@ -258,23 +281,41 @@ const handleSubmit = async () => {
                                     </select>
                                 </div>
 
-                                <div className="col-md-4">
-                                    <label className="form-label">Material Size</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        name="MaterialSize"
-                                        placeholder="Material Size"
-        value={formData.MaterialSize}
-        onChange={handleChange}
-                                    />
-                                        {/* Auto Size With Unit */}
-      <input
-        className="form-control mb-2"
-        value={formData.MaterialSizeWithUnit}
-        readOnly
-      />
-                                </div>
+
+
+<div className="col-md-4">
+  <label className="form-label">Material Size</label>
+
+  <div style={{ position: "relative" }}>
+    <input
+      type="number"
+      min="0"
+      className="form-control"
+      name="MaterialSize"
+      value={formData.MaterialSize}
+      onChange={handleChange}
+      onKeyDown={(e) => {
+        if (e.key === "-" || e.key === "e") {
+          e.preventDefault();
+        }
+      }}
+      style={{ paddingRight: "80px" }}
+    />
+
+    <span
+      style={{
+        position: "absolute",
+        right: "10px",
+        top: "50%",
+        transform: "translateY(-50%)",
+        color: "#6c757d",
+        fontWeight: "500"
+      }}
+    >
+      {getUnit(formData.MaterialType)}
+    </span>
+  </div>
+</div>
 
                                 <div className="col-md-4">
                                     <label className="form-label">Material Price(Single)</label>
@@ -440,7 +481,12 @@ value={formData.PaymentStatus}
 
           <p><strong>Import ID:</strong> {formData.ImportId}</p>
           <p><strong>Material:</strong> {formData.MaterialType}</p>
-          <p><strong>Size:</strong> {formData.MaterialSizeWithUnit}</p>
+          <p>
+  <strong>Size:</strong>{" "}
+  {formData.MaterialSize
+    ? `${formData.MaterialSize} ${formData.SizeType || getUnit(formData.MaterialType)}`
+    : "-"}
+</p>
           <p><strong>Material Total:</strong> ₹{formData.MaterialTotalPrice}</p>
           <p><strong>Wages:</strong> ₹{formData.WagesAmount}</p>
           <p><strong>Misc:</strong> ₹{formData.MiscellaneousAmount}</p>
